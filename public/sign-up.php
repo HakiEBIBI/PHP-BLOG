@@ -21,10 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo = new PDO($db, '', '', $options);
 
-            $check = $pdo->prepare('SELECT * FROM user WHERE email = ?');
+            $check = $pdo->prepare('SELECT email FROM user WHERE email = ?');
             $check->execute([$email]);
 
-            if ($check->rowCount() < 0) {
+            if ($check->fetch()) {
+                $errorMessage = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+            } else {
                 $insert = $pdo->prepare('INSERT INTO user (name, email, password) VALUES (?, ?, ?)');
                 $insert->execute([$username, $email, $passwordHashed]);
 
@@ -32,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit();
             }
         } catch (PDOException $e) {
-            $errorMessage = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+            $errorMessage = "Il y'a eu une erreur lors de l'ajout de l'utilisateur";
         }
     }
 }
