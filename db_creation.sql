@@ -12,6 +12,7 @@ create table user
 
 create table blog_posts
 (
+    id       integer primary key autoincrement unique,
     user_id    integer,
     title      varchar not null,
     image      text,
