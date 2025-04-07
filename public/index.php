@@ -12,11 +12,17 @@
 <header>
     <div class="nav-bar">
         <div class="menu-item" id="home"><a href="index.php">Home</a></div>
-        <div class="menu-item"><a href="post-creation.php">Post Creation</a></div>
+        <a href="post-creation.php">
+            <div class="menu-item">Post Creation</div>
+        </a>
     </div>
     <div class="nav-btn">
-        <button class="btn"><a href="sign-up.php">Sign Up</a></button>
-        <button class="btn"><a href="login.php">Login</a></button>
+        <a href="sign-up.php">
+            <button class="btn">Sign Up</button>
+        </a>
+        <a href="login.php">
+            <button class="btn">Login</button>
+        </a>
     </div>
 </header>
 <body>
