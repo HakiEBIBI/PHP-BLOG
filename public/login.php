@@ -15,15 +15,15 @@
         <form>
             <div class="input-group">
                 <div class="input-field">
-                    <input type="text" class="input" placeholder="Username">
+                    <input type="text" name="username" class="input" placeholder="Username">
                 </div>
 
                 <div class="input-field">
-                    <input type="email" class="input" placeholder="Email Address">
+                    <input type="email" name="email" class="input" placeholder="Email Address">
                 </div>
 
                 <div class="input-field">
-                    <input type="password" class="input" placeholder="Password">
+                    <input type="password" name="password" class="input" placeholder="Password">
                 </div>
             </div>
 
