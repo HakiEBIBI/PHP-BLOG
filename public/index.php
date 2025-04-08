@@ -23,6 +23,10 @@
         <a href="login.php">
             <button class="btn">Login</button>
         </a>
+
+        <a href="log-out.php">
+            <button class="btn">Log Out</button>
+        </a>
     </div>
 </header>
 <body>
