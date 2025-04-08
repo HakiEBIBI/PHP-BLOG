@@ -1,3 +1,43 @@
+<?php
+session_start();
+$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+$password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!$email || !$password || !$username) {
+        $errorMessage = "Veuillez remplir tous les champs correctement.";
+    } else {
+        $db = 'sqlite:../Database.db';
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ];
+
+        try {
+            $pdo = new PDO($db, '', '', $options);
+
+            $stmt = $pdo->prepare('SELECT * FROM user WHERE email = ?');
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
+
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+
+                header("Location: index.php");
+                exit();
+            } else {
+                $errorMessage = "Email ou mot de passe incorrect.";
+            }
+
+        } catch (PDOException $e) {
+            $errorMessage = "Erreur de base de données : " . $e->getMessage();
+        }
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,7 +52,11 @@
 <div class="container">
     <div class="form-box">
         <h1>Login</h1>
-        <form>
+        <?php if (isset($errorMessage)): ?>
+            <p style="color:red;"><?= htmlspecialchars($errorMessage) ?></p>
+        <?php endif; ?>
+
+        <form method="POST">
             <div class="input-group">
                 <div class="input-field">
                     <input type="text" name="username" class="input" placeholder="Username">
