@@ -1,3 +1,5 @@
 /vendor/
 /Database.db
 Database.db-journal
+public/image
+!public/image/signup-image.jpg
