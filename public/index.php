@@ -1,3 +1,25 @@
+<?php
+
+require_once 'image-upload.php';
+$db = 'sqlite:../Database.db';
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+];
+try {
+    $PDO = new PDO($db, '', '', $options);
+    $PDOPREPARE = $PDO->prepare('SELECT blog_posts.*, user.name FROM blog_posts JOIN user ON blog_posts.user_id = user.id');
+    $PDOPREPARE->execute();
+    $posts = $PDOPREPARE->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    $errors[] = 'Database error: ' . $e->getMessage();
+}
+
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -33,42 +55,17 @@
 
 <div class="all-blog">
 
-    <a href="post-detail.php">
-        <div class="blog">
-            <p>username - date of creation</p>
-            <img src="image/signup-image.jpg" class="blog_img" alt="blog image">
-            <h3>blog name</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
-    </a>
-
-    <a href="post-detail.php">
-        <div class="blog">
-            <p>username - date of creation</p>
-            <img src="image/signup-image.jpg" class="blog_img" alt="blog image">
-            <h3>blog name</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
-    </a>
-
-    <a href="post-detail.php">
-        <div class="blog">
-            <p>username - date of creation</p>
-            <img class="blog_img" src="image/signup-image.jpg" alt="blog image">
-            <h3>blog name</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
-    </a>
-
-    <a href="post-detail.php">
-        <div class="blog">
-            <p>username - date of creation</p>
-            <img src="image/signup-image.jpg" class="blog_img" alt="blog image">
-            <h3>blog name</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        </div>
-    </a>
-
+    <?php
+    foreach ($posts as $post) : ?>
+        <a href="post-detail.php">
+            <div class="blog">
+                <p><?= $post["name"] ?> - <?= $post["created_at"] ?></p>
+                <h2><?= $post["title"] ?></h2>
+                <img alt="image-blog" class="image" src="<?= $post['image'] ?>">
+                <p><?= $post['content'] ?></p>
+            </div>
+        </a>
+    <?php endforeach; ?>
 </div>
 
 </body>
