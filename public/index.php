@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 require_once 'image-upload.php';
 $db = 'sqlite:../Database.db';
@@ -30,25 +31,28 @@ try {
     <link rel="stylesheet" href="style/index.css" type="text/css">
     <title>Blog Website</title>
 </head>
-<!-- create a nav bar -->
 <header>
     <div class="nav-bar">
         <div class="menu-item" id="home"><a href="index.php">Home</a></div>
-        <a href="post-creation.php">
-            <div class="menu-item">Post Creation</div>
-        </a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="post-creation.php">
+                <div class="menu-item">Post Creation</div>
+            </a>
+        <?php endif; ?>
     </div>
     <div class="nav-btn">
-        <a href="sign-up.php">
-            <button class="btn">Sign Up</button>
-        </a>
-        <a href="login.php">
-            <button class="btn">Login</button>
-        </a>
-
-        <a href="log-out.php">
-            <button class="btn">Log Out</button>
-        </a>
+        <?php if (!isset($_SESSION['user_id'])): ?>
+            <a href="sign-up.php">
+                <button class="btn">Sign Up</button>
+            </a>
+            <a href="login.php">
+                <button class="btn">Login</button>
+            </a>
+        <?php else: ?>
+            <a href="log-out.php">
+                <button class="btn">Log Out</button>
+            </a>
+        <?php endif; ?>
     </div>
 </header>
 <body>

@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,8 +18,14 @@
         <div class="menu-item"><a href="post-creation.php">Post Creation</a></div>
     </div>
     <div class="nav-btn">
-        <button class="btn"><a href="sign-up.php">Sign Up</a></button>
-        <button class="btn"><a href="login.php">Login</a></button>
+        <?php if (!isset($_SESSION['user_id'])): ?>
+            <a href="sign-up.php">
+                <button class="btn">Sign Up</button>
+            </a>
+            <a href="login.php">
+                <button class="btn">Login</button>
+            </a>
+        <?php endif; ?>
     </div>
 </header>
 <body>
@@ -31,9 +41,11 @@
 
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 
-        <a href="post-edition.php">
-            <input class="btn" type="submit" value="Edit">
-        </a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="login.php">
+                <input class="btn" type="submit" value="Edit">
+            </a>
+        <?php endif; ?>
     </div>
 
 
