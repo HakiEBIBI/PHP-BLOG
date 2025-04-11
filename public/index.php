@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require_once 'image-upload.php';
 $db = 'sqlite:../Database.db';
 $options = [

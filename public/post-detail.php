@@ -1,7 +1,5 @@
 <?php
 SESSION_START();
-
-
 ?>
 
 <!doctype html>
@@ -43,7 +41,7 @@ SESSION_START();
 
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 
-        <?php if (!isset($_SESSION['user_id'])): ?>
+        <?php if (isset($_SESSION['user_id'])): ?>
             <a href="login.php">
                 <input class="btn" type="submit" value="Edit">
             </a>
