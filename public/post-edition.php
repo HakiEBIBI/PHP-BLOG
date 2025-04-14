@@ -28,42 +28,40 @@ if (isset($getId)) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
     $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_SPECIAL_CHARS);
-
     if (empty($title) || empty($content)) {
         $errorMessage = "Tous les champs sont obligatoires";
     } else {
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            require 'image-upload.php';
-            $uploadResult = uploadImage($_FILES['image']);
-
-            if (isset($uploadResult['error'])) {
-                $errorMessage = $uploadResult['error'];
-            } else {
-                $imagePath = $uploadResult['path'];
-
-                try {
-                    $pdo = new PDO('sqlite:../Database.db', '', '', [
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-                    ]);
-
-                    if (isset($post)) {
-                        $stmt = $pdo->prepare('UPDATE blog_posts SET title = ?, content = ?, image = ? WHERE id = ?');
-                        $stmt->execute([$title, $content, $imagePath, $id]);
-                        $successMessage = "Post mis à jour avec succès!";
-                    } else {
-                        $stmt = $pdo->prepare('INSERT INTO blog_posts (title, content, image, user_id, created_at) VALUES (?, ?, ?, ?, datetime())');
-                        $stmt->execute([$title, $content, $imagePath, $_SESSION['user_id']]);
-                        $successMessage = "Post créé avec succès!";
+        if (!empty($_FILES['image']['name'])) {
+            if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                require 'image-upload.php';
+                $uploadResult = uploadImage($_FILES['image']);
+                if (isset($uploadResult['error'])) {
+                    $errorMessage = $uploadResult['error'];
+                } else {
+                    $imagePath = $uploadResult['path'];
+                    try {
+                        if (isset($post)) {
+                            $stmt = $pdo->prepare('UPDATE blog_posts SET title = ?, content = ?, image = ? WHERE id = ?');
+                            $stmt->execute([$title, $content, $imagePath, $id]);
+                            $successMessage = "Post mis à jour avec succès!";
+                        }
+                        header("refresh:1;url=index.php");
+                    } catch (PDOException $e) {
+                        $errorMessage = "Erreur lors de l'ajout du post : " . $e->getMessage();
                     }
-
-                    header("refresh:1;url=index.php");
-                } catch (PDOException $e) {
-                    $errorMessage = "Erreur lors de l'ajout du post : " . $e->getMessage();
                 }
             }
         } else {
-            $errorMessage = "Veuillez sélectionner une image";
+            try {
+                if (isset($post)) {
+                    $stmt = $pdo->prepare('UPDATE blog_posts SET title = ?, content = ? WHERE id = ?');
+                    $stmt->execute([$title, $content, $id]);
+                    $successMessage = "Post mis à jour avec succès!";
+                }
+                header("refresh:1;url=index.php");
+            } catch (PDOException $e) {
+                $errorMessage = "Erreur lors de l'ajout du post : " . $e->getMessage();
+            }
         }
     }
 }
@@ -89,7 +87,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </header>
 
 <body>
-<form>
+<?php if ($errorMessage): ?>
+    <div class="error-message" style="color: red; text-align: center; margin: 10px;">
+        <?= htmlspecialchars($errorMessage) ?>
+    </div>
+<?php endif; ?>
+
+<?php if ($successMessage): ?>
+    <div class="success-message" style="color: green; text-align: center; margin: 10px;">
+        <?= htmlspecialchars($successMessage) ?>
+    </div>
+<?php endif; ?>
+<form method="post" enctype="multipart/form-data">
     <div class="all-input">
         <div class="text-input">
 
@@ -109,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label>
                 Content blog
                 <textarea name="content" class="content"
-                          placeholder="Enter the content of the blog"><?= $post['content'] ?></textarea>
+                          placeholder="Enter the content of the blog"><?= $post['content']; ?></textarea>
             </label>
 
         </div>
