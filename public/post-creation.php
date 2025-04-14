@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $errorMessage = "";
-$successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -33,8 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = $pdo->prepare('INSERT INTO blog_posts (title, content, image, user_id, created_at) VALUES (?, ?, ?, ?, datetime())');
                     $stmt->execute([$title, $content, $imagePath, $_SESSION['user_id']]);
 
-                    $successMessage = "Article créé avec succès!";
-                    header("refresh:1;url=index.php");
+                    header("Location: index.php?message=Votre blog a été posté");
                 } catch (PDOException $e) {
                     $errorMessage = "Erreur lors de la création de l'article";
                 }
@@ -71,11 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 <?php endif; ?>
 
-<?php if ($successMessage): ?>
-    <div class="success-message" style="color: green; text-align: center; margin: 10px;">
-        <?= htmlspecialchars($successMessage) ?>
-    </div>
-<?php endif; ?>
 <form method="POST" enctype="multipart/form-data">
     <div class="all-input">
         <div class="text-input">

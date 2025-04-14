@@ -96,12 +96,23 @@ a {
 }
 
 .image {
-    width: 100%;             /* prend toute la largeur du conteneur */
-    max-width: 600px;        /* limite la taille max sur les grands écrans */
-    height: 100%; /* garde les proportions */
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
     max-height: 300px;
-    object-fit: contain;     /* l’image ne sera jamais déformée */
-    display: block;          /* évite les petits espaces autour des images inline */
-    margin: 0 auto;          /* centre l’image si le parent n’a pas de flex ou grid */
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
     border-radius: 8px;
+}
+
+.alert {
+    padding: 10px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
 }

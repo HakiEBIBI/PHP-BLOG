@@ -56,7 +56,13 @@ try {
     </div>
 </header>
 <body>
+<?php
+$message = filter_input(INPUT_GET, 'message', FILTER_SANITIZE_SPECIAL_CHARS);
 
+if ($message) {
+    echo '<div class="alert">' . $message . '</div>';
+}
+?>
 <div class="all-blog">
 
     <?php

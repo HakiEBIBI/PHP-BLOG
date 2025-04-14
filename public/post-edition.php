@@ -3,7 +3,6 @@ session_start();
 $getId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if ($_SESSION['user_id'] === $getId)
     $errorMessage = "";
-$successMessage = "";
 
 if (isset($getId)) {
     $id = $getId;
@@ -43,9 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if (isset($post)) {
                             $stmt = $pdo->prepare('UPDATE blog_posts SET title = ?, content = ?, image = ? WHERE id = ?');
                             $stmt->execute([$title, $content, $imagePath, $id]);
-                            $successMessage = "Post mis à jour avec succès!";
                         }
-                        header("refresh:1;url=index.php");
+                        header("Location: index.php?message=Votre blog a été modifié");
                     } catch (PDOException $e) {
                         $errorMessage = "Erreur lors de l'ajout du post : " . $e->getMessage();
                     }
@@ -56,9 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($post)) {
                     $stmt = $pdo->prepare('UPDATE blog_posts SET title = ?, content = ? WHERE id = ?');
                     $stmt->execute([$title, $content, $id]);
-                    $successMessage = "Post mis à jour avec succès!";
                 }
-                header("refresh:1;url=index.php");
+                header("Location: index.php?message=Votre blog a été modifié");
             } catch (PDOException $e) {
                 $errorMessage = "Erreur lors de l'ajout du post : " . $e->getMessage();
             }
@@ -93,11 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 <?php endif; ?>
 
-<?php if ($successMessage): ?>
-    <div class="success-message" style="color: green; text-align: center; margin: 10px;">
-        <?= htmlspecialchars($successMessage) ?>
-    </div>
-<?php endif; ?>
 <form method="post" enctype="multipart/form-data">
     <div class="all-input">
         <div class="text-input">
