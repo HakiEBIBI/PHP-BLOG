@@ -61,7 +61,7 @@ try {
 
     <?php
     foreach ($posts as $post) : ?>
-        <a href="post-detail.php">
+        <a href="post-detail.php?id=<?= $post['id'] ?>">
             <div class="blog">
                 <p><?= $post["name"] ?> - <?= $post["created_at"] ?></p>
                 <h2><?= $post["title"] ?></h2>

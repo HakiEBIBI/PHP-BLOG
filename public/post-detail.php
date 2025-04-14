@@ -1,5 +1,28 @@
 <?php
 session_start();
+$error = '';
+$db = 'sqlite:../Database.db';
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+];
+$PDO = new PDO($db, '', '', $options);
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if (!empty($id)) {
+    $stmt = $PDO->prepare('SELECT blog_posts.*, user.name AS name
+    FROM blog_posts
+    JOIN user ON blog_posts.user_id = user.id
+    WHERE blog_posts.id = ?
+');
+    $stmt->execute([$id]);
+    $post = $stmt->fetch();
+} else {
+    $error = 'Post not found';
+}
+
 ?>
 
 <!doctype html>
@@ -33,17 +56,15 @@ session_start();
 <div class="all-input">
     <div class="text-input">
 
-        <p>username - created at</p>
+        <p><?= $post["created_at"] ?> - <?= $post['name'] ?></p>
+        <h2><?= $post["title"] ?></h2>
+        <img alt="image blog" src="<?= $post["image"] ?>" class="image"/>
+        <p><?= $post["content"] ?></p>
 
-        <h2>Title Blog</h2>
 
-        <img class="image" src="image/signup-image.jpg" alt="boat on river">
-
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-
-        <?php if (isset($_SESSION['user_id'])): ?>
-            <a href="login.php">
-                <input class="btn" type="submit" value="Edit">
+        <?php if ($_SESSION['user_id'] === $post['user_id']): ?>
+            <a href="post-edition.php?id=<?= $post['id'] ?>"
+            <button class="btn" type="submit" value="Edit">Edit</button>
             </a>
         <?php endif; ?>
     </div>
