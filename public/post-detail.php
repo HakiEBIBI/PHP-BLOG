@@ -63,8 +63,8 @@ if (!empty($id)) {
 
 
         <?php if ($_SESSION['user_id'] === $post['user_id']): ?>
-            <a href="post-edition.php?id=<?= $post['id'] ?>"
-            <input class="btn" type="submit" value="Edit">Edit
+            <a class="btn" href="post-edition.php?id=<?= $post['id'] ?>">
+                Edit
             </a>
         <?php endif; ?>
     </div>
