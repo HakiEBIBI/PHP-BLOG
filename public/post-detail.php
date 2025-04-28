@@ -9,6 +9,8 @@ $options = [
 ];
 $PDO = new PDO($db, '', '', $options);
 
+require_once 'test-if-admin.php';
+
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!empty($id)) {
@@ -23,6 +25,7 @@ if (!empty($id)) {
     $error = 'Post not found';
 }
 
+$isAdmin = isset($_SESSION['user_id']) ? isUserAdmin($PDO, $_SESSION['user_id']) : false;
 ?>
 
 <!doctype html>
@@ -62,7 +65,7 @@ if (!empty($id)) {
         <p><?= $post["content"] ?></p>
 
 
-        <?php if ($_SESSION['user_id'] === $post['user_id']): ?>
+        <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $post['user_id'] || $isAdmin)): ?>
              <a class="btn" href="post-edition.php?id=<?= $post['id'] ?>">
                 Edit
             </a>
