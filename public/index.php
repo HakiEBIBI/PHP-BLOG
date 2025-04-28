@@ -56,7 +56,12 @@ try {
     </div>
 </header>
 <body>
-
+<?php
+if (isset($_SESSION['successMessage'])) {
+    echo '<div class="successMessage">' . htmlspecialchars($_SESSION['successMessage']) . '</div>';
+    unset($_SESSION['successMessage']);
+}
+?>
 <div class="all-blog">
 
     <?php
