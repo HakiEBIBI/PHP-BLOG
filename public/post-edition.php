@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $stmt = $pdo->prepare('UPDATE blog_posts SET title = ?, content = ?, image = ? WHERE id = ?');
                             $stmt->execute([$title, $content, $imagePath, $id]);
                         }
-                        $_SESSION['successMessage'] = "Votre Blog a été modifié";
+                        $_SESSION['successMessage'] = "Votre Blog a été ajouté";
                         header("Location: index.php");
                     } catch (PDOException $e) {
                         $errorMessage = "Erreur lors de l'ajout du post : " . $e->getMessage();
@@ -56,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = $pdo->prepare('UPDATE blog_posts SET title = ?, content = ? WHERE id = ?');
                     $stmt->execute([$title, $content, $id]);
                 }
-                header("Location: index.php?message=Votre blog a été modifié");
+                $_SESSION['successMessage'] = "Votre Blog a été modifié";
+                header("Location: index.php");
             } catch (PDOException $e) {
                 $errorMessage = "Erreur lors de l'ajout du post : " . $e->getMessage();
             }
