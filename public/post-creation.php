@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = $pdo->prepare('INSERT INTO blog_posts (title, content, image, user_id, created_at) VALUES (?, ?, ?, ?, datetime())');
                     $stmt->execute([$title, $content, $imagePath, $_SESSION['user_id']]);
 
-                    header("Location: index.php?message=Votre blog a été posté");
+                    $_SESSION['successMessage'] = "Votre blog a été posté";
+                    header("Location: index.php");
                 } catch (PDOException $e) {
                     $errorMessage = "Erreur lors de la création de l'article";
                 }

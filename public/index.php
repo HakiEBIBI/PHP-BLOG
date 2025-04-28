@@ -57,10 +57,9 @@ try {
 </header>
 <body>
 <?php
-$message = filter_input(INPUT_GET, 'message', FILTER_SANITIZE_SPECIAL_CHARS);
-
-if ($message) {
-    echo '<div class="alert">' . $message . '</div>';
+if (isset($_SESSION['successMessage'])) {
+    echo '<div class="successMessage">' . htmlspecialchars($_SESSION['successMessage']) . '</div>';
+    unset($_SESSION['successMessage']);
 }
 ?>
 <div class="all-blog">
