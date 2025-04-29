@@ -20,7 +20,7 @@ try {
 
     $stmt = $pdo->prepare('SELECT * FROM user WHERE id = ?');
     $stmt->execute([$id]);
-    $post = $stmt->fetch();
+    $user = $stmt->fetch();
 
 
 } catch (PDOException $e) {
@@ -43,19 +43,19 @@ if ($newPassword !== '') {
     }
 }
 
-if ($newPassword === '' && password_verify($password, $hashedPassword) && $username === $post['name'] && $email === $post['email']) {
+if ($newPassword === '' && password_verify($password, $hashedPassword) && $username === $user['name'] && $email === $user['email']) {
     $_SESSION['successMessage'] = "le compte reste inchangé";
     header('Location: index.php');
 }
 
 try {
-    if ($email && $email !== $post['email']) {
+    if ($email && $email !== $user['email']) {
         $stmt = $pdo->prepare('UPDATE user SET email = ? WHERE id = ?');
         $stmt->execute([$email, $id]);
         $updated = true;
     }
 
-    if ($username && $username !== $post['name']) {
+    if ($username && $username !== $user['name']) {
         $stmt = $pdo->prepare('UPDATE user SET name = ? WHERE id = ?');
         $stmt->execute([$username, $id]);
         $updated = true;
