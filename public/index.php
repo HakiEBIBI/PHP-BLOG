@@ -52,6 +52,9 @@ try {
             <a href="log-out.php">
                 <button class="btn">Log Out</button>
             </a>
+            <a href="edit-user-profile.php?id=">
+                <button class="btn">Edit profile</button>
+            </a>
         <?php endif; ?>
     </div>
 </header>
