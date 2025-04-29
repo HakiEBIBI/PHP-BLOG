@@ -25,7 +25,7 @@ if (!empty($id)) {
     $error = 'Post not found';
 }
 
-$isAdmin = isset($_SESSION['user_id']) ? isUserAdmin($PDO, $_SESSION['user_id']) : false;
+$isAdmin = isset($_SESSION['user_id']) && isUserAdmin($PDO, $_SESSION['user_id']);
 ?>
 
 <!doctype html>
@@ -66,7 +66,7 @@ $isAdmin = isset($_SESSION['user_id']) ? isUserAdmin($PDO, $_SESSION['user_id'])
 
 
         <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $user['user_id'] || $isAdmin)): ?>
-             <a class="btn" href="post-edition.php?id=<?= $user['id'] ?>">
+            <a class="btn" href="post-edition.php?id=<?= $user['id'] ?>">
                 Edit
             </a>
         <?php endif; ?>

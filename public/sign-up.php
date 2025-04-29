@@ -61,15 +61,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
             <div class="input-group">
                 <div class="input-field">
-                    <input type="text" name="username" class="input" placeholder="Username">
+                    <label>
+                        <input type="text" name="username" class="input" placeholder="Username">
+                    </label>
                 </div>
 
                 <div class="input-field">
-                    <input type="email" name="email" class="input" placeholder="Email Address">
+                    <label>
+                        <input type="email" name="email" class="input" placeholder="Email Address">
+                    </label>
                 </div>
 
                 <div class="input-field">
-                    <input type="password" name="password" class="input" placeholder="Password">
+                    <label>
+                        <input type="password" name="password" class="input" placeholder="Password">
+                    </label>
                 </div>
             </div>
 
