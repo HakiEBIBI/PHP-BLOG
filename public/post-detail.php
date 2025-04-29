@@ -25,7 +25,7 @@ if (!empty($id)) {
     $error = 'Post not found';
 }
 
-$isAdmin = isset($_SESSION['user_id']) ? isUserAdmin($PDO, $_SESSION['user_id']) : false;
+$isAdmin = isset($_SESSION['user_id']) && isUserAdmin($PDO, $_SESSION['user_id']);
 ?>
 
 <!doctype html>
