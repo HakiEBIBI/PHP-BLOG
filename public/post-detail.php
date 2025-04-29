@@ -20,7 +20,7 @@ if (!empty($id)) {
     WHERE blog_posts.id = ?
 ');
     $stmt->execute([$id]);
-    $post = $stmt->fetch();
+    $user = $stmt->fetch();
 } else {
     $error = 'Post not found';
 }
@@ -59,14 +59,14 @@ $isAdmin = isset($_SESSION['user_id']) ? isUserAdmin($PDO, $_SESSION['user_id'])
 <div class="all-input">
     <div class="text-input">
 
-        <p><?= $post["created_at"] ?> - <?= $post['name'] ?></p>
-        <h2><?= $post["title"] ?></h2>
-        <img alt="image blog" src="<?= $post["image"] ?>" class="image"/>
-        <p><?= $post["content"] ?></p>
+        <p><?= $user["created_at"] ?> - <?= $user['name'] ?></p>
+        <h2><?= $user["title"] ?></h2>
+        <img alt="image blog" src="<?= $user["image"] ?>" class="image"/>
+        <p><?= $user["content"] ?></p>
 
 
-        <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $post['user_id'] || $isAdmin)): ?>
-             <a class="btn" href="post-edition.php?id=<?= $post['id'] ?>">
+        <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $user['user_id'] || $isAdmin)): ?>
+             <a class="btn" href="post-edition.php?id=<?= $user['id'] ?>">
                 Edit
             </a>
         <?php endif; ?>
